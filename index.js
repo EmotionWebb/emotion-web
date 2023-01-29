@@ -4,12 +4,23 @@ const app = express();
 
 // set the view engine to ejs
 // app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
+// app.set("view engine", "ejs");
+
+// Require static assets from public folder
+app.use(express.static(path.join(__dirname, "public")));
+
+// Set 'views' directory for any views
+// being rendered res.render()
+app.set("views", path.join(__dirname, "views"));
+
+// Set view engine as EJS
+app.engine("html", require("ejs").renderFile);
+app.set("view engine", "html");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/public", express.static("public"));
+// app.use("/public", express.static("public"));
 // app.use(express.static(path.join(__dirname, "public")));
 // use res.render to load up an ejs view file
 
