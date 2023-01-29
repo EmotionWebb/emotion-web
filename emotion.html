@@ -1,0 +1,195 @@
+<html>
+  <head>
+    <title>EmotionWeb</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/public/assets/styles.css" rel="stylesheet" type="text/css" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/ml5@0.4.3/dist/ml5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.js"></script>
+
+    <!-- <link rel="stylesheet" href="/styles.css" type="text/css" /> -->
+    <!-- <link rel="stylesheet" href="/styles.css" /> -->
+    <style>
+      /* body {
+        color: white;
+      }
+      .heading {
+        width: 80%;
+        font-size: 22px;
+      }
+      #camera {
+        border: 2px dashed black;
+        width: 350px;
+        height: 300px;
+
+        margin: 0;
+        margin-left: 0;
+        margin-left: -546px;
+      }
+      .name_of_objects,
+      #result_object_name,
+      #result_object_accuracy {
+        color: rgb(241, 137, 155);
+        font-weight: bold;
+        margin-bottom: 2em;
+      }
+
+      .emotions {
+        display: flex;
+        justify-content: space-evenly;
+      }
+      #canvas {
+        border: 2px dashed black;
+        width: 350px;
+        height: 300px;
+      }
+      .windows {
+        display: flex;
+      } */
+      .heading {
+        width: 80%;
+        font-size: 22px;
+      }
+      #camera {
+        display: flex;
+        justify-content: space-around;
+        /* border: 2px dashed black; */
+        /* width: 350px;
+    height: 300px; */
+
+        margin: 0;
+        margin-left: 0;
+        /* margin-left: -546px; */
+      }
+      .name_of_objects,
+      #result_object_name,
+      #result_object_accuracy {
+        color: rgb(241, 137, 155);
+        font-weight: bold;
+        margin-bottom: 2em;
+      }
+
+      .emotions {
+        display: flex;
+        justify-content: space-evenly;
+      }
+      #video {
+        width: 40%;
+        border: 2px dashed black;
+      }
+      #canvas {
+        border: 2px dashed black;
+        /* width: 350px;
+    height: 300px; */
+        width: 40%;
+      }
+      .windows {
+        display: flex;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <center>
+        <h3 class="btn btn-default heading">EmotionWEB</h3>
+        <br /><br />
+
+        <p style="font-size: 22px">
+          Model is trained to identify the following emotions :
+        </p>
+
+        <div class="name_of_objects">
+          <li class="emotions">
+            <span>Laughing </span>
+            <span>Smiling </span>
+            <span>Sad </span>
+            <span>Angry </span>
+          </li>
+        </div>
+
+        <label style="color: #24252a">Webcam View - </label>
+        <div id="camera" class="windows">
+          <video id="video" autoplay></video>
+          <canvas id="canvas"></canvas>
+        </div>
+        <!-- width="320" height="240" -->
+
+        <br /><br />
+
+        <!-- <p style="font-size: 22px">
+          Object : <span id="result_object_name"></span>
+        </p>
+        <p style="font-size: 22px">
+          Accuracy : <span id="result_object_accuracy"></span>
+        </p> -->
+      </center>
+      <center>
+        <div>
+          <div id="result"></div>
+          <br /><br />
+          <button id="start-camera" class="btn btn-warning">
+            Start Camera
+          </button>
+          <button id="click-photo" class="btn btn-info">Capture Image</button>
+          <br /><br />
+          <button onclick="check();" class="btn btn-success">
+            Identify Image
+          </button>
+          <button class="btn btn-danger" id="stopCam">Close</button>
+        </div>
+      </center>
+    </div>
+  </body>
+  <script>
+    let camera_button = document.querySelector("#start-camera");
+    let video = document.querySelector("#video");
+    let click_button = document.querySelector("#click-photo");
+    let canvas = document.querySelector("#canvas");
+    let stopCam = document.querySelector("#stopCam");
+
+    camera_button.addEventListener("click", async function () {
+      let stream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+
+        audio: false,
+      });
+      video.srcObject = stream;
+    });
+
+    click_button.addEventListener("click", function () {
+      canvas
+        .getContext("2d")
+        .drawImage(video, 0, 0, canvas.width, canvas.height);
+      let image_data_url = canvas.toDataURL("image/jpeg");
+    });
+    stopCam.addEventListener(
+      "click",
+      async function stopStreamedVideo(videoElem) {
+        // let stream = await navigator.mediaDevices.getUserMedia({
+        //   video: true,
+
+        //   audio: false,
+        // });
+        const mediaStream = video.srcObject;
+
+        // Through the MediaStream, you can get the MediaStreamTracks with getTracks():
+        const tracks = mediaStream.getTracks();
+
+        // Tracks are returned as an array, so if you know you only have one, you can stop it with:
+        tracks[0].stop();
+
+        // Or stop all like so:
+        tracks.forEach((track) => track.stop());
+        console.log("stp is working");
+
+        videoElem.srcObject = null;
+      }
+    );
+  </script>
+</html>
