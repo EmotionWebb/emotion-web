@@ -15,7 +15,8 @@ app.use("/public", express.static("public"));
 
 // index page
 app.get("/", function (req, res) {
-  res.render("emote");
+  // res.render("emote");
+  res.send("HELLO GANESH");
 });
 
 // app.listen(8080);
