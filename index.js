@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 // index page
 app.get("/", function (req, res) {
   // res.render("emote");
-  res.sendFile("emotion.html");
+  res.sendFile("./emotion.html");
   // res.send("HELLO GANESH");
 });
 
