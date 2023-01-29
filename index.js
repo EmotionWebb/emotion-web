@@ -15,7 +15,7 @@ app.use("/public", express.static("public"));
 
 // index page
 app.get("/", function (req, res) {
-  res.render("pages/index");
+  res.render("index");
 });
 
 // app.listen(8080);
